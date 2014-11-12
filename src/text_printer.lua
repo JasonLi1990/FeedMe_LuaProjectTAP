@@ -1,154 +1,71 @@
-local gfx = require "emulator.gfx"
-local surface = require "emulator.surface"
-local TableFunctions = require "src.TableFunctions"
-local XMLToTable = require "src.XMLToTable"
+local gfx = require "lib/gfx"
+local surface = require "lib/surface"
+local TableFunctions = require "RSStoTable/TableFunctions"
+local XMLToTable = require "RSStoTable/XMLToTable"
 
 text_printer = {
 }
 
 --[[load and initialize 26 letters (uppercase and lowercase)]]
-local upper_a = gfx.loadpng("data/img/TNR/uppercase_a.png")
-local upper_b = gfx.loadpng("data/img/TNR/uppercase_b.png")
-local upper_c = gfx.loadpng("data/img/TNR/uppercase_c.png")
-local upper_d = gfx.loadpng("data/img/TNR/uppercase_d.png")
-local upper_e = gfx.loadpng("data/img/TNR/uppercase_e.png")
-local upper_f = gfx.loadpng("data/img/TNR/uppercase_f.png")
-local upper_g = gfx.loadpng("data/img/TNR/uppercase_g.png")
-local upper_h = gfx.loadpng("data/img/TNR/uppercase_h.png")
-local upper_i = gfx.loadpng("data/img/TNR/uppercase_i.png")
-local upper_j = gfx.loadpng("data/img/TNR/uppercase_j.png")
-local upper_k = gfx.loadpng("data/img/TNR/uppercase_k.png")
-local upper_l = gfx.loadpng("data/img/TNR/uppercase_l.png")
-local upper_m = gfx.loadpng("data/img/TNR/uppercase_m.png")
-local upper_n = gfx.loadpng("data/img/TNR/uppercase_n.png")
-local upper_o = gfx.loadpng("data/img/TNR/uppercase_o.png")
-local upper_p = gfx.loadpng("data/img/TNR/uppercase_p.png")
-local upper_q = gfx.loadpng("data/img/TNR/uppercase_q.png")
-local upper_r = gfx.loadpng("data/img/TNR/uppercase_r.png")
-local upper_s = gfx.loadpng("data/img/TNR/uppercase_s.png")
-local upper_t = gfx.loadpng("data/img/TNR/uppercase_t.png")
-local upper_u = gfx.loadpng("data/img/TNR/uppercase_u.png")
-local upper_v = gfx.loadpng("data/img/TNR/uppercase_v.png")
-local upper_w = gfx.loadpng("data/img/TNR/uppercase_w.png")
-local upper_x = gfx.loadpng("data/img/TNR/uppercase_x.png")
-local upper_y = gfx.loadpng("data/img/TNR/uppercase_y.png")
-local upper_z = gfx.loadpng("data/img/TNR/uppercase_z.png")
+local upper_a = gfx.loadpng("img/TNR/uppercase_a.png")
+local upper_b = gfx.loadpng("img/TNR/uppercase_b.png")
+local upper_c = gfx.loadpng("img/TNR/uppercase_c.png")
+local upper_d = gfx.loadpng("img/TNR/uppercase_d.png")
+local upper_e = gfx.loadpng("img/TNR/uppercase_e.png")
+local upper_f = gfx.loadpng("img/TNR/uppercase_f.png")
+local upper_g = gfx.loadpng("img/TNR/uppercase_g.png")
+local upper_h = gfx.loadpng("img/TNR/uppercase_h.png")
+local upper_i = gfx.loadpng("img/TNR/uppercase_i.png")
+local upper_j = gfx.loadpng("img/TNR/uppercase_j.png")
+local upper_k = gfx.loadpng("img/TNR/uppercase_k.png")
+local upper_l = gfx.loadpng("img/TNR/uppercase_l.png")
+local upper_m = gfx.loadpng("img/TNR/uppercase_m.png")
+local upper_n = gfx.loadpng("img/TNR/uppercase_n.png")
+local upper_o = gfx.loadpng("img/TNR/uppercase_o.png")
+local upper_p = gfx.loadpng("img/TNR/uppercase_p.png")
+local upper_q = gfx.loadpng("img/TNR/uppercase_q.png")
+local upper_r = gfx.loadpng("img/TNR/uppercase_r.png")
+local upper_s = gfx.loadpng("img/TNR/uppercase_s.png")
+local upper_t = gfx.loadpng("img/TNR/uppercase_t.png")
+local upper_u = gfx.loadpng("img/TNR/uppercase_u.png")
+local upper_v = gfx.loadpng("img/TNR/uppercase_v.png")
+local upper_w = gfx.loadpng("img/TNR/uppercase_w.png")
+local upper_x = gfx.loadpng("img/TNR/uppercase_x.png")
+local upper_y = gfx.loadpng("img/TNR/uppercase_y.png")
+local upper_z = gfx.loadpng("img/TNR/uppercase_z.png")
 
-local a = gfx.loadpng("data/img/TNR/a.png")
-local b = gfx.loadpng("data/img/TNR/b.png")
-local c = gfx.loadpng("data/img/TNR/c.png")
-local d = gfx.loadpng("data/img/TNR/d.png")
-local e = gfx.loadpng("data/img/TNR/e.png")
-local f = gfx.loadpng("data/img/TNR/f.png")
-local g = gfx.loadpng("data/img/TNR/g.png")
-local h = gfx.loadpng("data/img/TNR/h.png")
-local i = gfx.loadpng("data/img/TNR/i.png")
-local j = gfx.loadpng("data/img/TNR/j.png")
-local k = gfx.loadpng("data/img/TNR/k.png")
-local l = gfx.loadpng("data/img/TNR/l.png")
-local m = gfx.loadpng("data/img/TNR/m.png")
-local n = gfx.loadpng("data/img/TNR/n.png")
-local o = gfx.loadpng("data/img/TNR/o.png")
-local p = gfx.loadpng("data/img/TNR/p.png")
-local q = gfx.loadpng("data/img/TNR/q.png")
-local r = gfx.loadpng("data/img/TNR/r.png")
-local s = gfx.loadpng("data/img/TNR/s.png")
-local t = gfx.loadpng("data/img/TNR/t.png")
-local u = gfx.loadpng("data/img/TNR/u.png")
-local v = gfx.loadpng("data/img/TNR/v.png")
-local w = gfx.loadpng("data/img/TNR/w.png")
-local x = gfx.loadpng("data/img/TNR/x.png")
-local y = gfx.loadpng("data/img/TNR/y.png")
-local z = gfx.loadpng("data/img/TNR/z.png")
--- local dot = gfx.loadpng("data/img/TNR/dot.png")
--- local comma = gfx.loadpng("data/img/TNR/comma.png")
---local blank = gfx.loadpng("data/img/TNR/blank.png")
-
-
-local chr_0 = gfx.loadpng("data/img/TNR/0.png")
-local chr_1 = gfx.loadpng("data/img/TNR/1.png")
-local chr_2 = gfx.loadpng("data/img/TNR/2.png")
-local chr_3 = gfx.loadpng("data/img/TNR/3.png")
-local chr_4 = gfx.loadpng("data/img/TNR/4.png")
-local chr_5 = gfx.loadpng("data/img/TNR/5.png")
-local chr_6 = gfx.loadpng("data/img/TNR/6.png")
-local chr_7 = gfx.loadpng("data/img/TNR/7.png")
-local chr_8 = gfx.loadpng("data/img/TNR/8.png")
-local chr_9 = gfx.loadpng("data/img/TNR/9.png")
-
-local space = gfx.loadpng("data/img/TNR/32.png")
-local exclamation_mark = gfx.loadpng("data/img/TNR/33.png")
-local double_quotation_mark = gfx.loadpng("data/img/TNR/34.png")
-local pound = gfx.loadpng("data/img/TNR/35.png")
-local dolar = gfx.loadpng("data/img/TNR/36.png")
-local percent = gfx.loadpng("data/img/TNR/37.png")
-local ampersand = gfx.loadpng("data/img/TNR/38.png")
-local single_quotation_mark = gfx.loadpng("data/img/TNR/39.png")
-local round_bracket_left = gfx.loadpng("data/img/TNR/40.png")
-local round_bracket_right = gfx.loadpng("data/img/TNR/41.png")
-local asterisk = gfx.loadpng("data/img/TNR/42.png")
-local plus = gfx.loadpng("data/img/TNR/43.png")
-local comma = gfx.loadpng("data/img/TNR/44.png")
-local minus = gfx.loadpng("data/img/TNR/45.png")
-local dot = gfx.loadpng("data/img/TNR/46.png")
-local slash = gfx.loadpng("data/img/TNR/47.png")
-
-local colon = gfx.loadpng("data/img/TNR/58.png")
-local semicolon = gfx.loadpng("data/img/TNR/59.png")
-local less_than_sign = gfx.loadpng("data/img/TNR/60.png")
-local equal = gfx.loadpng("data/img/TNR/61.png")
-local more_than_sign = gfx.loadpng("data/img/TNR/62.png")
-local question_mark = gfx.loadpng("data/img/TNR/63.png")
-local at = gfx.loadpng("data/img/TNR/64.png")
-
-local square_bracket_left = gfx.loadpng("data/img/TNR/91.png")
-local back_slash = gfx.loadpng("data/img/TNR/92.png")
-local square_bracket_right = gfx.loadpng("data/img/TNR/93.png")
-local caret = gfx.loadpng("data/img/TNR/94.png")
-local underscore = gfx.loadpng("data/img/TNR/95.png")
-local backquote = gfx.loadpng("data/img/TNR/96.png")
-
-
-
+local a = gfx.loadpng("img/TNR/a.png")
+local b = gfx.loadpng("img/TNR/b.png")
+local c = gfx.loadpng("img/TNR/c.png")
+local d = gfx.loadpng("img/TNR/d.png")
+local e = gfx.loadpng("img/TNR/e.png")
+local f = gfx.loadpng("img/TNR/f.png")
+local g = gfx.loadpng("img/TNR/g.png")
+local h = gfx.loadpng("img/TNR/h.png")
+local i = gfx.loadpng("img/TNR/i.png")
+local j = gfx.loadpng("img/TNR/j.png")
+local k = gfx.loadpng("img/TNR/k.png")
+local l = gfx.loadpng("img/TNR/l.png")
+local m = gfx.loadpng("img/TNR/m.png")
+local n = gfx.loadpng("img/TNR/n.png")
+local o = gfx.loadpng("img/TNR/o.png")
+local p = gfx.loadpng("img/TNR/p.png")
+local q = gfx.loadpng("img/TNR/q.png")
+local r = gfx.loadpng("img/TNR/r.png")
+local s = gfx.loadpng("img/TNR/s.png")
+local t = gfx.loadpng("img/TNR/t.png")
+local u = gfx.loadpng("img/TNR/u.png")
+local v = gfx.loadpng("img/TNR/v.png")
+local w = gfx.loadpng("img/TNR/w.png")
+local x = gfx.loadpng("img/TNR/x.png")
+local y = gfx.loadpng("img/TNR/y.png")
+local z = gfx.loadpng("img/TNR/z.png")
+local dot = gfx.loadpng("img/TNR/dot.png")
+local comma = gfx.loadpng("img/TNR/comma.png")
+local blank = gfx.loadpng("img/TNR/blank.png")
 
 --[[create the table for mapping ASCII code and character_img]]
 local chr_table = {
-  {id = 32,img = space},
-  {id = 33,img = exclamation_mark},
-  {id = 34,img = double_quotation_mark},
-  {id = 35,img = pound},
-  {id = 36,img = dolar},
-  {id = 37,img = percent},
-  {id = 38,img = ampersand},
-  {id = 39,img = single_quotation_mark},
-  {id = 40,img = round_bracket_left},
-  {id = 41,img = round_bracket_right},
-  {id = 42,img = asterisk},
-  {id = 43,img = plus},
-  {id = 44,img = comma},
-  {id = 45,img = minus},
-  {id = 46,img = dot},
-  {id = 47,img = slash},
-
-  {id = 48,img = chr_0},
-  {id = 49,img = chr_1},
-  {id = 50,img = chr_2},
-  {id = 51,img = chr_3},
-  {id = 52,img = chr_4},
-  {id = 53,img = chr_5},
-  {id = 54,img = chr_6},
-  {id = 55,img = chr_7},
-  {id = 56,img = chr_8},
-  {id = 57,img = chr_9},
-
-  {id = 58,img = colon},
-  {id = 59,img = semicolon},
-  {id = 60,img = less_than_sign},
-  {id = 61,img = equal},
-  {id = 62,img = more_than_sign},
-  {id = 63,img = question_mark},
-  {id = 64,img = at},
-
   {id = 65,img = upper_a},
   {id = 66,img = upper_b},
   {id = 67,img = upper_c},
@@ -174,14 +91,7 @@ local chr_table = {
   {id = 87,img = upper_w},
   {id = 88,img = upper_x},
   {id = 89,img = upper_y},
-  {id = 90,img = upper_z},
-
-  {id = 91,img = square_bracket_left},
-  {id = 92,img = back_slash},
-  {id = 93,img = square_bracket_right},
-  {id = 94,img = caret},
-  {id = 95,img = underscore},
-  {id = 96,img = backquote},
+  {id = 80,img = upper_z},
 
   {id = 97,img = a},
   {id = 98,img = b},
@@ -213,7 +123,7 @@ local chr_table = {
 }
 
 allnews = {}
-allnews = XMLToTable.readXML("data/rss/temp3.xml")
+allnews = XMLToTable.getTable()
 
 --[[initialize the headlines cordinator]]
 local headline_positions = {
@@ -238,15 +148,13 @@ function get_chr_img(chr,letter_width)
   -- body
   for i=1, TableFunctions.tablelength(chr_table) do
     if chr == chr_table[i].id then
-      create_surface(chr_table[i].img, text_xi, text_yi)
-      text_xi = text_xi + letter_width
-      -- if(chr <= 122 and chr >= 97)  then
-      --   create_surface(chr_table[i].img, text_xi, text_yi)
-      --   text_xi = text_xi + letter_width
-      -- elseif(chr <= 90 and chr >= 65) then
-      --   create_surface(chr_table[i].img, text_xi, text_yi)
-      --   text_xi = text_xi + letter_width
-      -- end
+      if(chr <= 122 and chr >= 97)  then
+        create_surface(chr_table[i].img, text_xi, text_yi)
+        text_xi = text_xi + letter_width
+      elseif(chr <= 90 and chr >= 65) then
+        create_surface(chr_table[i].img, text_xi, text_yi)
+        text_xi = text_xi + letter_width
+      end
     end
   end
 end
@@ -269,7 +177,7 @@ function create_surface(img, x, y)
     h = text_surface:get_height()
   }
   -- print(xi .." xi")
-  text_surface:copyfrom(img, temp_src_rec, temp_des_rec, false)
+  text_surface:copyfrom(img, temp_src_rec, temp_des_rec, true)
   --gfx.update()
 end
 
@@ -279,14 +187,6 @@ function surface_reset()
   line_len = 0
   text_xi = 0
   text_yi = 0
-end
---[[Reset the text_xi, text_yi, line_len to get a new line]]
--- <<TESTED AND WORKING ON THE BOX>>
-function new_line()
-  -- body
-  line_len = 0
-  text_xi = 0
-  text_yi = text_yi + letter_height
 end
 
 --[[A function that prints a string on a surface. The surface size is dependent on the length of
@@ -356,83 +256,51 @@ function print_text(mixed_text, x, y, max_width, max_height, font, word_break, t
   }
 
   -- 
-  
+  local not_spanned = true
 
   -- match the word in the string
-  -- for word in string.gmatch(text, "%w+") do
-  --   if(string.len(word) * letter_width > max_width) then
-  --     not_spanned = false
-  --     for i=1, string.len(word) do
-  --       chr = string.byte(word, i)
-  --       if(text_xi == max_width - letter_width) then
-  --         create_surface(comma, text_xi, text_yi)
-  --         text_xi = 0
-  --         text_yi = text_yi + letter_height
-  --         line_len = 0
-  --         get_chr_img(chr,letter_width)
-  --       else 
-  --         get_chr_img(chr,letter_width)
-  --       end
-  --       line_len = line_len + letter_width
+  for word in string.gmatch(text, "%w+") do
+    if(string.len(word) * letter_width > max_width) then
+      not_spanned = false
+      for i=1, string.len(word) do
+        chr = string.byte(word, i)
+        if(text_xi == max_width - letter_width) then
+          create_surface(comma, text_xi, text_yi)
+          text_xi = 0
+          text_yi = text_yi + letter_height
+          line_len = 0
+          get_chr_img(chr,letter_width)
+        else 
+          get_chr_img(chr,letter_width)
+        end
+        line_len = line_len + letter_width
 
-  --     end
-  --   elseif((string.len(word) * letter_width) > (max_width - line_len)) then
-  --     line_len = 0
-  --     text_xi = 0
-  --     text_yi = text_yi + letter_height
-  --   end
-  --   if(not_spanned) then
-  --   for i=1, string.len(word) do
-  --     chr = string.byte(word, i)
-  --     get_chr_img(chr,letter_width)
-  --     line_len = line_len + letter_width
-  --   end
-  --   end
-  --   not_spanned = true
-  --   text_xi = text_xi + letter_width
-  --   line_len = line_len + letter_width
-  -- end
-  line_max_len = math.floor(max_width/letter_width) * letter_width
-  print(line_max_len)
-  for i=1, string.len(text) do
-    chr = string.byte(text,i)
-    print(chr)
-    if (line_max_len == line_len) then
-        new_line()
-        get_chr_img(chr,letter_width)
-        line_len = line_len + letter_width
-    else 
-      line_len = line_len + letter_width
-      if(check_end_of_line(chr))  then 
-        get_chr_img(45,letter_width)
-        new_line()
-        get_chr_img(chr,letter_width)
-        line_len = line_len + letter_width
-      else
-        get_chr_img(chr,letter_width)
       end
-    end  
-  end  
-  screen:copyfrom(text_surface,headline_src_rec,screen_des_rec,false)
-  gfx.update()
-end
-
-function check_end_of_line(chr)
-  -- body
-  local spanned = false
-  if((chr <= 122 and chr >= 97)  or (chr <= 90 and chr >= 65)) and line_len == line_max_len then
-    spanned = true
-    print(chr.."spanned")
+    elseif((string.len(word) * letter_width) > (max_width - line_len)) then
+      line_len = 0
+      text_xi = 0
+      text_yi = text_yi + letter_height
+    end
+    if(not_spanned) then
+    for i=1, string.len(word) do
+      chr = string.byte(word, i)
+      get_chr_img(chr,letter_width)
+      line_len = line_len + letter_width
+    end
+    end
+    not_spanned = true
+    text_xi = text_xi + letter_width
+    line_len = line_len + letter_width
   end
-  return spanned
+
+  screen:copyfrom(text_surface,headline_src_rec,screen_des_rec,true)
+  gfx.update()
 end
 
 function text_printer.main()
   for i=1, 9 do
     print_text(allnews[i]["title"], headline_positions[i]['xpos'], headline_positions[i]['ypos'], 250, 87, "Li", "dummy", "dummy")
     surface_reset()
-    print("new title")
-    print(allnews[i]["title"])
   end
 end
 

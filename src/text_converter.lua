@@ -1,9 +1,8 @@
 local gfx = require "emulator.gfx"
 local rcu = require "emulator.events"
 local surface = require "emulator.surface"
-local TableFunctions = require "src.TableFunctions"
 local XMLToTable = require "src.XMLToTable"
-local tables = require "src.tables"
+local news_tables = require "src.news_tables"
 
 text_converter = {}
 ---------------- initialize 26 letters --------------------------
@@ -130,18 +129,19 @@ local chr_table = {
 local headline_surface = gfx.new_surface(240,66)
 
 allnews = {}
-allnews = XMLToTable.readXML("data/rss/temp3.xml")
+--allnews = XMLToTable.readXML("data/rss/temp3.xml", "sport")
+allnews = news_tables.getAllNews()
 
 local headline_positions = {
-  {xpos= 240, ypos = 214},
-  {xpos= 528, ypos = 214},
-  {xpos= 820, ypos = 214},
-  {xpos= 240, ypos = 422},
-  {xpos= 528, ypos = 422},
-  {xpos= 820, ypos = 422}, 
-  {xpos= 240, ypos = 621},
-  {xpos= 528, ypos = 621},
-  {xpos= 820, ypos = 621}
+  {xpos= 110, ypos = 70},
+  {xpos= 511, ypos = 70},
+  {xpos= 911, ypos = 70},
+  {xpos= 110, ypos = 286},
+  {xpos= 511, ypos = 286},
+  {xpos= 911, ypos = 286}, 
+  {xpos= 110, ypos = 502},
+  {xpos= 511, ypos = 502},
+  {xpos= 911, ypos = 502}
   }
 
 local screen_des_rec = {
@@ -228,7 +228,7 @@ end
 --@param chr
 function get_chr_img(chr)
 	-- body
-	for i=1, TableFunctions.tablelength(chr_table) do
+	for i=1, #chr_table do
 		if chr == chr_table[i].id then
 			-- print(chr .."in func get_chr_img")
 			if(chr <= 122 and chr >= 97)	then		

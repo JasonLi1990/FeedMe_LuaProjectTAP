@@ -17,8 +17,8 @@ love = require('test.usurp_love')
 -- The emulator functions
 local surface = require "emulator/surface"
 local gfx = require "emulator/gfx"
-local rcu = require "emulator/rcu"
-sys = require "emulator/sysmodule"
+---local rcu = require "emulator/rcu"
+--sys = require "emulator/sysmodule"
 ----- Require the code & tests to be tested ----
 
 -- Main app
@@ -32,6 +32,10 @@ require('test.test_XMLToTable')
 -- text_converter
 require('src.text_converter') --Error here since love isn't started when emulator gfx module is instantiated
 require('test.test_text_converter')
+
+--main_controller and main_view
+require('src.main_controller')
+require('test.test_app3-working-on-box')
 
 
 -- Run the unit tests

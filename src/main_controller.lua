@@ -37,7 +37,7 @@ function Main_controller:on_input(key, state)
   end
 
   if key == "ok" then
-  --
+    self.view:print_article()
   elseif key == "down" or key == "up" or key == "right"  or key == "left" then
     self.view:move(key)
   elseif tonumber(key) then

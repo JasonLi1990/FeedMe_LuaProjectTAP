@@ -4,7 +4,7 @@
 -- Class begins
 Main_view = {
   -- Attributes
-  text_printer = require "src.text_printer", 
+  text_converter = require "src.text_converter", 
   current_highlight = 1
 }
 
@@ -18,10 +18,12 @@ end
 
 -- Load the graphics
 function Main_view:load()
-  self.background = gfx.loadpng("data/img/backgroundfeedme.png")
-  self.highlight_green = gfx.loadpng("data/img/highlight_green.png")
-  self.highlight_blue = gfx.loadpng("data/img/highlight_blue.png")
-  self.highlight_pink = gfx.loadpng("data/img/highlight_pink.png")
+  self.background = gfx.loadpng("data/img/Newbackground.png")
+  self.highlight_img = gfx.loadpng("data/img/highlighttemp.png")
+  self.article_view = gfx.loadpng("data/img/readModeGrid.png")
+ -- self.highlight_green = gfx.loadpng("data/img/highlighttemp.png")
+ -- self.highlight_blue = gfx.loadpng("data/img/highlight_blue.png")
+ -- self.highlight_pink = gfx.loadpng("data/img/highlight_pink.png")
   
   self:highlight(1)
 end
@@ -37,23 +39,23 @@ function Main_view:highlight(position)
   end
 
   if position == 1 or position == 4 or position == 7 then
-    x_cord =260
+    x_cord =57
   elseif position == 2 or position == 5 or position == 8 then
-    x_cord =548
+    x_cord =458
   elseif position == 3 or position == 6 or position == 9 then
-    x_cord =840
+    x_cord =858
   else
   end
 
   if position == 1 or position == 2 or position == 3 then
-    y_cord =60
-    img = self.highlight_green
+    y_cord =54
+    img = self.highlight_img
   elseif position == 4 or position == 5 or position == 6 then
-    y_cord =268
-    img = self.highlight_blue
+    y_cord =270
+    img = self.highlight_img
   elseif position == 7 or position == 8 or position == 9 then
-    y_cord =467
-    img = self.highlight_pink
+    y_cord =486
+    img = self.highlight_img
   else
   end
 
@@ -94,8 +96,11 @@ function Main_view:highlight(position)
 
   screen:copyfrom(self.background,back_src_rec,back_des_rec,true)
   screen:copyfrom(img,src_rec,des_rec,true)
-  text_printer.main()
+  text_converter.main()
   gfx.update()
+  
+  --return -- only for testing
+  return src_rec, des_rec, back_src_rec, back_des_rec
 end
 
 function Main_view:move(direction)
@@ -123,4 +128,12 @@ function Main_view:move(direction)
       self.current_highlight = self.current_highlight-1
     end
   end
+end
+
+function  Main_view:print_article() 
+ -- self.current_highlight 
+ 
+ screen:copyfrom(self.article_view,back_src_,back_des_,true)
+ gfx.update()
+ 
 end

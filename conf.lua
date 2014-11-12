@@ -1,5 +1,5 @@
 --
---  This file contains global configuration variables
+--  This file contains configuration for the smulator (the LÖVE game engine)
 --
 
 function love.conf(t)

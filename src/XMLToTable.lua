@@ -5,8 +5,8 @@ XMLToTable = {}
 --The function takes in a line and checks if there is text any between the sign '>' and '<'. If it isn't the conclusion is that the text is on the next line. 
 --@param line - one line from the xml-file that includes some tag. 
 --@return false if there is nothing between the tags else return true.
---
---OBS! Rigth now the "<item>" and "</item>" tag has to be on it's own row. Might want to fix this! 
+
+--OBS! Right now the "<item>" and "</item>" tag has to be on it's own row. Might want to fix this! 
 function checkSameRow(line)
   if(string.match(line,"%>(.-)%<")~=nil) then
     return true
@@ -17,9 +17,9 @@ end
 ---
 --Finds wanted tags in a xml file and saves it to allNews table.
 --The function searches for the tags "title", "description", "link" and "pubDate" for every news in an xml file . The text between the tags are then added to a table (news) which are then added to a table containing all news called "allNews"
---@param filename a string corresponding to the name of an xml file.
+--@param filename, cat filename is a string corresponding to the name of an xml file, cat is the category of the file.
 --@return allNews - table containing tables with information about every news, such as title, description etc. 
-function readXML(filename)
+function readXML(filename, cat)
   local allNews= {}
   local news = {}
   -- Opens a file in read
@@ -90,9 +90,14 @@ function readXML(filename)
 
         end
 
+        --image
+         if((string.match(s, "%<(.-)%:t"))=="media" ) then
+             news["image"]=string.match(s, "%rl=\"(.-)%\"")
+        end  
 
       end
-      table.insert(allNews, {title = news["title"], description = news["description"], link = news["articleLink"], pubDate = news["pubDate"]})
+
+      table.insert(allNews, {title = news["title"], description = news["description"], link = news["articleLink"], pubDate = news["pubDate"], image = news["image"], category=cat})
     end
 
   end
@@ -102,7 +107,4 @@ function readXML(filename)
 end
 
 XMLToTable.readXML = readXML
-news={}
-news=readXML("data/rss/economy.xml")
-
 return XMLToTable

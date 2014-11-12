@@ -1,22 +1,26 @@
 local XMLToTable = require "src.XMLToTable"
 
-tables = {}
+news_tables = {}
 
 --creates table with news from world.xml
 worldNews={}
-worldNews = XMLToTable.readXML("data/rss/world.xml")
+worldNews = XMLToTable.readXML("data/rss/world.xml", "world")
   
 --creates table with news from sport.xml
 sportNews={}
-sportNews = XMLToTable.readXML("data/rss/sport.xml")
+sportNews = XMLToTable.readXML("data/rss/sport.xml", "sport")
   
 --creates table with news from economy.xml
 economyNews={}
-economyNews = XMLToTable.readXML("data/rss/economy.xml")
+economyNews = XMLToTable.readXML("data/rss/economy.xml","economy")
 
 --creates table with news from technology.xml
 techNews={}
-techNews = XMLToTable.readXML("data/rss/technology.xml")
+techNews = XMLToTable.readXML("data/rss/technology.xml","technology")
+
+--creates table with news from entertainment.xml
+entertainmentNews={}
+entertainmentNews = XMLToTable.readXML("data/rss/entertainment.xml","entertainment")
 
 allNews = {}
   
@@ -47,6 +51,14 @@ end
 function getTechNews()
   return techNews
 end
+
+---
+--getter for entrertainmentNews
+--@return entertainmentNews
+function getEntertainmentNews()
+  return entertainmentNews
+end
+
 ---
 --Creates a table with all news
 --This function adds all the news from the different categories to the allNews table and sorts it based on pubDate.
@@ -55,6 +67,7 @@ function createAllNews()
   allNews = appendTable(allNews,sportNews)
   allNews = appendTable(allNews,economyNews)
   allNews = appendTable(allNews,techNews)
+  --allNews = appendTable(allNews,entertainmentNews)  If we want an entertainment category, uncomment this line.
   
   table.sort(allNews,isLatest)  
   
@@ -99,6 +112,7 @@ end
 --This function finds the year, month,day and time in the pubDate string and returns the date on os.time format.
 --@param s string corresponding to the news pubDate
 --@return date in os.time format.
+
 function getDate(s)
   monthToNumber ={Jan =1,Feb =2, Mar=3,Apr=4,May=5,Jun=6,Jul=7,Aug=8,Sep=9,Oct=10,Nov=11,Dec=12}
 
@@ -113,26 +127,35 @@ function getDate(s)
 
 end
 
+createAllNews() -- Att: Need to do this before you do getAllNews
+
+--remove later - just for test. 
 function main()
  
-  createAllNews() -- Att: Need to do this before you do getAllNews
   news= {}
   news = getAllNews()
   print(#news)
   table.sort(news,isLatest)
   for i = 1, 40 do
-    print(news[i]["pubDate"])
+    print(news[i]["pubDate"] .. " " .. news[i]["category"] )
   end
 
 end
 
 main()
 
+--tables.getWorldNews = getWorldNews
+--tables.getSprotNews = getSprotNews
+--tables.getTechNews = getTechNews
+--tables.getEconomyNews = getEconomyNews
+--tables.createAllNews = createAllNews
+--tables.appendTable= appendTable
+--tables.isLatest=isLatest
+--tables.getDate=getDate
 
---table.getWorldNews = getWorldNews
---table.getSprotNews = getSprotNews
---table.getTechNews = getTechNews
---table.getEconomyNews = getEconomyNews
---table.createAllNews = createAllNews
+news_tables.getAllNews = getAllNews
 
-return tables
+
+
+
+return news_tables
