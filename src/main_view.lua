@@ -1,47 +1,66 @@
--- Includes
+--- Main_view
+-- Prints the graphics of the Main_view
+-- Prints the background, news_articles, news_headlines, highlight, category_highlight and category_tag 
+-- Prints the border of the specified square and also "press OK" sign 
+-- @classmod main_view
+-- @author Li & Ylva
+-- @copyright FeedMe@TAP interactive 
 
+-- Create meta table with attributes
 
--- Class begins
 Main_view = {
-  -- Attributes
-  text_converter = require "src.text_converter", 
-  current_highlight = 1
 }
 
--- Constructor/Factory for the view object
-function Main_view:new(object)
-  object = object or {}
-  setmetatable(object, self)
+
+---
+--Constructor/Factory for the view object.
+-- @return object Return Main_view object. 
+function Main_view:new()
+  local view = View:new()
+  setmetatable(view, self)
   self.__index = self
-  return self
+
+  -- Return view
+  return view
+
 end
 
--- Load the graphics
-function Main_view:load()
-  self.background = gfx.loadpng("data/img/Newbackground.png")
-  self.highlight_img = gfx.loadpng("data/img/highlighttemp.png")
-  self.article_view = gfx.loadpng("data/img/readModeGrid.png")
- -- self.highlight_green = gfx.loadpng("data/img/highlighttemp.png")
- -- self.highlight_blue = gfx.loadpng("data/img/highlight_blue.png")
- -- self.highlight_pink = gfx.loadpng("data/img/highlight_pink.png")
-  
-  self:highlight(1)
+---
+--Load the news, highlight and category_highlight.
+-- @param news Load the table of all news.  
+function Main_view:load(arguments)
+  self.news = arguments["news"]
+  self.page = arguments["page"]
+  graphics.show_image("src/data/img/newprototype.png", 0, 0)
+  self:add_thumbnail(self.news)
+  self:highlight(arguments["position"])
+  self:print_headlines(self.news)
+  self:category_highlight(arguments["category_index"], arguments["position"]) 
+  if arguments["right_arrow"] then
+    self:add_right_arrow()
+  end
+  if arguments["left_arrow"] then
+    self:add_left_arrow()
+  end
+  gfx.update()
 end
 
-
+---
+-- Highlight the article on the Main_view-
+-- @param position The position code on the screen based on the 9 square.
+-- @return null For testing .
 function Main_view:highlight(position)
   local x_cord
   local y_cord
-  local img
 
   if position < 1 or position > 9 then
     return
   end
 
   if position == 1 or position == 4 or position == 7 then
-    x_cord =57
+    x_cord =67
   elseif position == 2 or position == 5 or position == 8 then
-    x_cord =458
+    x_cord =463
   elseif position == 3 or position == 6 or position == 9 then
     x_cord =858
   else
@@ -49,91 +68,143 @@ function Main_view:highlight(position)
 
   if position == 1 or position == 2 or position == 3 then
     y_cord =54
-    img = self.highlight_img
   elseif position == 4 or position == 5 or position == 6 then
     y_cord =270
-    img = self.highlight_img
   elseif position == 7 or position == 8 or position == 9 then
     y_cord =486
-    img = self.highlight_img
   else
   end
-
-  local src_rec = {
-    x = 0,
-    y = 0,
-    w = img:get_width(),
-    h = img:get_height()
-  }
-
-  local des_rec = {
-    x = x_cord,
-    y = y_cord,
-    w = screen:get_width(),
-    h = screen:get_height()
-  }
-
-  local back_src_rec = {
-    x = 0,
-    y = 0,
-    w = self.background:get_width(),
-    h = self.background:get_height()
-  }
-
-  local back_des_rec = {
-    x = 0,
-    y = 0,
-    w = screen:get_width(),
-    h = screen:get_height()
-  }
-
-  local des_rec = {
-    x = x_cord,
-    y = y_cord,
-    w = screen:get_width(),
-    h = screen:get_height()
-  }
-
-  screen:copyfrom(self.background,back_src_rec,back_des_rec,true)
-  screen:copyfrom(img,src_rec,des_rec,true)
-  text_converter.main()
-  gfx.update()
+      
+  graphics.show_image("src/data/img/highlighttemp.png", x_cord, y_cord)  
   
   --return -- only for testing
-  return src_rec, des_rec, back_src_rec, back_des_rec
+  return 
 end
 
-function Main_view:move(direction)
-  if direction == "down" then
-    if self.current_highlight < 7 then
-      self:highlight(self.current_highlight+3)
-      self.current_highlight = self.current_highlight+3
-    end
+---
+-- Highlight category on the Main_view on the top of the screen. 
+-- @param position The position where the category is. 
+-- @return null For testing .
+function Main_view:category_highlight(position, news_position)
+  local x_cord
+  local y_cord = 36
+
+  if position < 1 or position > 5 then
+    return
   end
-  if direction == "up" then
-    if self.current_highlight > 3 then
-      self:highlight(self.current_highlight-3)
-      self.current_highlight = self.current_highlight-3
-    end
-  end
-  if direction == "right" then
-    if self.current_highlight%3 ~= 0 then
-      self:highlight(self.current_highlight+1)
-      self.current_highlight = self.current_highlight+1
-    end
-  end
-  if direction == "left" then
-    if self.current_highlight ~= 1 and self.current_highlight ~= 4 and self.current_highlight ~= 7 then
-      self:highlight(self.current_highlight-1)
-      self.current_highlight = self.current_highlight-1
-    end
-  end
+
+  if position == 1 then
+    x_cord = 456
+  elseif position == 2 then
+    x_cord = 539
+  elseif position == 3 then
+    x_cord = 642
+  elseif position == 4 then
+    x_cord = 713
+  elseif position == 5 then
+    x_cord = 803
+  else
+
+end
+if news_position == 10 then
+  graphics.show_image("src/data/img/categoryhighlight.png", x_cord, y_cord)
+else
+  graphics.show_image("src/data/img/minihighlight_2.png", x_cord, y_cord)
+end
+  --return -- only for testing
+  return 
 end
 
-function  Main_view:print_article() 
- -- self.current_highlight 
- 
- screen:copyfrom(self.article_view,back_src_,back_des_,true)
- gfx.update()
- 
+---
+-- Print headlines in the specified squares.
+-- @param main_view_news The table of all news.
+function Main_view:print_headlines(main_view_news)
+  -- body
+  local fonts = font_loader.get_fonts()
+  local headline_positions = {
+    {xpos= 82, ypos = 180},
+    {xpos= 483, ypos = 180},
+    {xpos= 883, ypos = 180},
+    {xpos= 82, ypos = 396},
+    {xpos= 483, ypos = 396},
+    {xpos= 883, ypos = 396}, 
+    {xpos= 82, ypos = 612},
+    {xpos= 483, ypos = 612},
+    {xpos= 883, ypos = 612}
+  }
+
+
+  local nr_of_news = 9*self.page
+  if #main_view_news < 9*self.page then
+    nr_of_news = #main_view_news
+  end
+  local start = 1+(9*(self.page-1))
+  local pos = 1
+  for i = start, nr_of_news do
+    text_printer.print_text(main_view_news[i]["title"],headline_positions[pos]['xpos'],headline_positions[pos]['ypos'],300,66,fonts["ubuntumonobold"],"uppercase")
+    pos = pos +1
+  end
+
 end
+
+---
+--Print the border of the specified square, the category tag and also "press OK" sign.
+-- @param main_view_news The table of all news. 
+function Main_view:add_thumbnail(main_view_news)
+
+  local rectangle_positions = {
+    {xpos= 69, ypos = 57},
+    {xpos= 465, ypos = 57},
+    {xpos= 860, ypos = 57},
+    {xpos= 69, ypos = 273},
+    {xpos= 465, ypos = 273},
+    {xpos= 860, ypos = 273}, 
+    {xpos= 69, ypos = 489},
+    {xpos= 465, ypos = 489},
+    {xpos= 860, ypos = 489}
+  }
+
+  local tag_positions = {
+    {xpos= 67, ypos = 65},
+    {xpos= 463, ypos = 65},
+    {xpos= 858, ypos = 65},
+    {xpos= 67, ypos = 281},
+    {xpos= 463, ypos = 281},
+    {xpos= 858, ypos = 281}, 
+    {xpos= 67, ypos = 497},
+    {xpos= 463, ypos = 497},
+    {xpos= 858, ypos = 497}
+  }
+
+
+  local nr_of_news = 9*self.page
+  if #main_view_news < 9*self.page then
+    nr_of_news = #main_view_news
+  end
+
+  local start = 1+(9*(self.page-1))
+  local pos = 1
+  for i = start, nr_of_news do
+   graphics.show_image("src/data/img/" ..main_view_news[i]["image"], rectangle_positions[pos]['xpos']+3, rectangle_positions[pos]['ypos']+3 )
+   graphics.show_image("src/data/img/rectangle.png", rectangle_positions[pos]['xpos'], rectangle_positions[pos]['ypos'])
+   graphics.show_image("src/data/img/textbox.png", rectangle_positions[pos]['xpos']+3, rectangle_positions[pos]['ypos']+116)
+   graphics.show_image("src/data/img/" ..main_view_news[i]["category"] .. "tag.png", tag_positions[pos]['xpos']-3, tag_positions[pos]['ypos'])
+   pos = pos +1
+
+  end
+
+end
+
+---
+-- Prints the left arrow at the right position
+function Main_view:add_left_arrow()
+ graphics.show_image("src/data/img/leftarrow.png",12, 320)
+end
+
+---
+-- Prints the right arrow at the right position
+function Main_view:add_right_arrow()
+ graphics.show_image("src/data/img/rightarrow.png",1226,320)
+end
+
+return Main_view

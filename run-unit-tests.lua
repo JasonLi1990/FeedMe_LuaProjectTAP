@@ -1,50 +1,93 @@
-----------------------------------------------
+
+-----------------------------------------------
 -- Run this file to run unit tests on App 3
-----------------------------------------------
+-----------------------------------------------
 
------------- Require test framework ------------
+PATH = ""
+LOG_OUTPUT_FILE = false
+LOG_OUTPUT_CONSOLE = false
 
- --
- -- Run this file to run unit tests on App 1
- --
+local log = require "lib/log" --needs to exist or it will crash
 
--- The luaunit library
+-----------------------------------------------
+------------ Require test framework -----------
+-----------------------------------------------
+
+-- luaunit framework & tests
 require('test.luaunit')
+LuaUnit.verbosity = 2
+
+-- tests for LuaUnit
+require('test.test_luaunit')
+
+---------- The emulator functions  -------------
+local gfx = require "emulator/gfx"
+--local rcu = require "emulator/rcu"
+--sys = require "emulator/sysmodule"
 
 -- The usurpated love library
 love = require('test.usurp_love')
 
--- The emulator functions
-local surface = require "emulator/surface"
-local gfx = require "emulator/gfx"
----local rcu = require "emulator/rcu"
---sys = require "emulator/sysmodule"
------ Require the code & tests to be tested ----
+----------------------------------------
+------- Unit tests for src files -------
+----------------------------------------
 
--- Main app
---require('app') 
---require('test.test_app') 
+--article_controller
+require('src.article_controller')
+require('test.test_article_controller')
 
--- XMLToTable
-require('src.XMLToTable')
-require('test.test_XMLToTable')
+-- xml_to_table
+require('lib.xml_parser')
+require('test.test_xml_to_table')
 
--- text_converter
-require('src.text_converter') --Error here since love isn't started when emulator gfx module is instantiated
-require('test.test_text_converter')
+-- article_view
+require('src.article_view')
+require('test.test_article_view')
 
---main_controller and main_view
+--main_controller
+require('src.controller')
+require('test.test_controller')
+
+-- graphics
+require('lib.graphics')
+require('test.test_graphics')
+
+--main_controller
 require('src.main_controller')
-require('test.test_app3-working-on-box')
+require('test.test_main_controller')
 
+--main_news_model
+require('src.news_model')
+require('test.test_news_model')
 
--- Run the unit tests
+-- main_view
+require('src.main_view')
+require('test.test_main_view')
+
+-- view
+require('src.view')
+require('test.test_view')
+
+-- gfx
+require('emulator/gfx')
+require('test.test_gfx')
+
+------------------------------------------
+------ Unit testing of lib files ---------
+------------------------------------------
+
+-- download
+-- require('lib.download')
+-- require('test.test_download')
+
+-- test
+-- require('lib.log')
+-- require('test.test_log')
+
+-- test
+require('lib.text_printer')
+require('test.test_text_printer')
+------------------------------------------
+---------- Run the unit tests ------------
+------------------------------------------
 os.exit( LuaUnit.run() )
-
-
-
---The code of the box to test
---require('functionnal_code')
-
--- Require the tests
---require('test.app2_test') 

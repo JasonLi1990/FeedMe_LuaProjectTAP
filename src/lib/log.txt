@@ -1,0 +1,59 @@
+INFO: ----------------------------------------------------
+INFO: onStart() run
+INFO: Graphic Limit: 0
+INFO: Graphic use: 0
+INFO: Loading controller: Main_controller
+INFO: Surface loading image: /src/data/font/Li/uppercase_a.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_b.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_c.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_d.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_e.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_f.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_g.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_h.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_i.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_j.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_k.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_l.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_m.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_n.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_o.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_p.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_q.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_r.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_s.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_t.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_u.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_v.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_w.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_x.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_y.png
+INFO: Surface loading image: /src/data/font/Li/uppercase_z.png
+INFO: Surface loading image: /src/data/font/Li/a.png
+INFO: Surface loading image: /src/data/font/Li/b.png
+INFO: Surface loading image: /src/data/font/Li/c.png
+INFO: Surface loading image: /src/data/font/Li/d.png
+INFO: Surface loading image: /src/data/font/Li/e.png
+INFO: Surface loading image: /src/data/font/Li/f.png
+INFO: Surface loading image: /src/data/font/Li/g.png
+INFO: Surface loading image: /src/data/font/Li/h.png
+INFO: Surface loading image: /src/data/font/Li/i.png
+INFO: Surface loading image: /src/data/font/Li/j.png
+INFO: Surface loading image: /src/data/font/Li/k.png
+INFO: Surface loading image: /src/data/font/Li/l.png
+INFO: Surface loading image: /src/data/font/Li/m.png
+INFO: Surface loading image: /src/data/font/Li/n.png
+INFO: Surface loading image: /src/data/font/Li/o.png
+INFO: Surface loading image: /src/data/font/Li/p.png
+INFO: Surface loading image: /src/data/font/Li/q.png
+INFO: Surface loading image: /src/data/font/Li/r.png
+INFO: Surface loading image: /src/data/font/Li/s.png
+INFO: Surface loading image: /src/data/font/Li/t.png
+INFO: Surface loading image: /src/data/font/Li/u.png
+INFO: Surface loading image: /src/data/font/Li/v.png
+INFO: Surface loading image: /src/data/font/Li/w.png
+INFO: Surface loading image: /src/data/font/Li/x.png
+INFO: Surface loading image: /src/data/font/Li/y.png
+INFO: Surface loading image: /src/data/font/Li/z.png
+INFO: Surface loading image: /src/data/font/Li/44.png
+INFO: Loading XML file: src/data/rss/world.xml

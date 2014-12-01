@@ -6,8 +6,6 @@ License: BSD License, see LICENSE.txt
 
 -- This is a bit tricky since the test uses the features that it tests.
 
-require('luaunit')
-
 Mock = {
     __class__ = 'Mock',
     calls = {}    
@@ -129,37 +127,12 @@ TestLuaUnitAssertions = {} --class
 
     TestLuaUnitAssertions.__class__ = 'TestLuaUnitAssertions'
     
-    -- Some super function to test
-function my_super_function( arg1, arg2 ) return arg1 + arg2 end
-    
-    TestMyStuff = {} --class
-    function TestMyStuff:testWithNumbers()
-        a = 1
-        b = 2
-        result = my_super_function( a, b )
-        assertEquals( type(result), 'number' )
-        assertEquals( result, 3 )
-    end
-
-    function TestMyStuff:testWithRealNumbers()
-        a = 1.1
-        b = 2.2
-        result = my_super_function( a, b )
-        assertEquals( type(result), 'number' )
-        -- I would like the result to be always rounded to an integer
-        -- but it won't work with my simple implementation
-        -- thus, the test will fail
-        assertEquals( result, 3 )
-    end
-    
-    
-
     function TestLuaUnitAssertions:test_assertEquals()
         f = function() return true end
         g = function() return true end
         
         assertEquals( 1, 1 )
-        assertEquals( "abc", "abd" )
+        assertEquals( "abc", "abc" )
         assertEquals( nil, nil )
         assertEquals( true, true )
         assertEquals( f, f)
@@ -256,13 +229,6 @@ function my_super_function( arg1, arg2 ) return arg1 + arg2 end
 
     function TestLuaUnitAssertions:test_assertNotEqualsDifferentTypes2()
         assertNotEquals( 2, "abc" )
-    end
-
-function TestLuaUnitAssertions:test_hightlight()
-        a = 1
-        
-        result = highlight(a)
-        assertEquals( result, 1 )
     end
 
     function TestLuaUnitAssertions:test_assertTrue()
@@ -1256,6 +1222,3 @@ TestLuaUnitExecution = {} --class
         assertEquals( executedTests[7], "MyTestToto2:test2" )
         assertEquals( #executedTests, 7)
     end
-
-LuaUnit.verbosity = 2
-os.exit( LuaUnit.run() )

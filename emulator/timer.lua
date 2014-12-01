@@ -1,26 +1,25 @@
-local cron = require("emulator.cron")
-local class = require( "emulator.classy" )
+Timer = {}
 
-local timer = class("timer")
-
-function timer:__init(interval_millisec, callback)
+function Timer:new(interval_millisec, callback)
+  object = {}
+  setmetatable(object,self)
+  self.__index = Surface;
 	self.interval = interval_millisec 
 	self.callback = callback
-	self.cron = cron.every(interval_millisec, callback)
 	return self
 end
 
-function timer:stop()
+function Timer:stop()
 	self.cron = nil
 end
 
-function timer:start()
+function Timer:start()
 	self.cron = cron.every(self.interval, self.callback)
 end
 
 
-function timer:update(dt)
+function Timer:update(dt)
 	self.cron:update(dt)
 end
 
-return timer
+return Timer
