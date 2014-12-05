@@ -1,6 +1,8 @@
-------------------------------------------------------------------
--------------------- surface data types --------------------------
---------------------------------------------------------------------
+---
+-- Emulator Surface module
+-- Surface data types
+-- The surface simulation on emulator based on the Zenterio API used for operating the surface like creating a surface, get the pixel etc. from the screen
+-- @emulator surface
 
 --An area (pixmap) in graphics memory. Format is 32-bit RGBA.
 
@@ -33,7 +35,10 @@ Surface = {
   image_data = nil
 }
 
-
+---
+-- Constructor/Factory for the surface object.
+-- @param object 
+-- @return object New surface object
 function Surface:new(object)
   object = object or {}
   setmetatable(object,self)
@@ -41,26 +46,31 @@ function Surface:new(object)
   return object
 end
 
+---
 -- Surface:img(path)
 -- Loads an image from path
+-- @param path The source path used to load the image 
 function Surface:img(path)
   log.info("Surface loading image: "..path)
   self.name = path
   self.image_data = love.image.newImageData(path)
 end
 
--- Surface:change_size(x,y)
+---
+--  Surface:change_size(x,y)
+--  @param x 
+--  @param y
 function Surface:change_size(x, y)
   self.image_data = love.image.newImageData(x, y)
 end
 
+---
 -- Surface:clear
 -- Fills the surface with a solid color, using hardware acceleration.
 -- Surface transparency is replaced by the transparency value of
 -- <color>.
--- Default color is {0, 0, 0, 0}, that is black and completely transparent.
--- Default rectangle is the whole surface. Parts outside the rectangle
--- are not affected.
+-- @param color Default color is {0, 0, 0, 0}, that is black and completely transparent.
+-- @param rectangle Default rectangle is the whole surface. Parts outside the rectangle are not affected.
 function Surface:clear(color, rectangle)
   local c = {
     r = 0,
@@ -99,11 +109,12 @@ function Surface:clear(color, rectangle)
   end
 end
 
+---
 -- Surface:fill
 -- Blends the surface with a solid color, weighing alpha values
 -- (SRCOVER). Uses hardware acceleration.
--- Default rectangle is the whole surface. Parts outside the rectangle
--- are not affected.
+-- @param color The table of color containg RGB values
+-- @param rectangle Default rectangle is the whole surface. Parts outside the rectangle are not affected.
 function Surface:fill(color, rectangle)
   local c = {
     r = 0,
@@ -142,6 +153,7 @@ function Surface:fill(color, rectangle)
   end
 end
 
+---
 -- Surface:get()
 -- Copy pixels from one surface to another, using hardware
 -- acceleration. Parts or all of <src_surface> can be copied.
@@ -155,67 +167,78 @@ end
 -- width and height are taken from <src_rectangle>. If <dest_rectangle>
 -- doesn't specify width or height, these values are also taken from
 -- <src_rectangle>.
-
 -- If <blend_option> is true, copying is blended using the alpha
 -- information in <src_surface>. If false, the alpha channel is
 -- replaced by the values in <src_surface>.
 -- Default is false.
+-- @return image_data - return the surface
 function Surface:get()
   return self.image_data
 end
 
--- Surface:copyfrom(...)
+---
+--  Surface:copyfrom(...)
 function Surface:copyfrom(src_surface, src_rect, dest_rect, blend_option)
   
-  if src_rect == nil then
-    src_rect.x = src_rect.x or 0
-    src_rect.y = src_rect.x or 0
-    src_rect.w = src_rect.w or self.image_data:getWidth()
-    src_rect.h = src_rect.h or self.image_data:getWidth()
-  end
+  src_rect = src_rect or {}
+  src_rect.x = src_rect.x or 0
+  src_rect.y = src_rect.y or 0
+  src_rect.w = src_rect.w or self.image_data:getWidth()
+  src_rect.h = src_rect.h or self.image_data:getHeight()
   
-  if dest_rect == nil then
-    dest_rect.x = dest_rect.x or 0
-    dest_rect.y = dest_rect.y or 0
-    dest_rect.w = dest_rect.w or src_surface.image_data:getWidth()
-    dest_rect.h = dest_rect.h or src_surface.image_data:getWidth()
-  end
+  dest_rect = dest_rect or {}
+  dest_rect.x = dest_rect.x or 0
+  dest_rect.y = dest_rect.y or 0
+  dest_rect.w = dest_rect.w or src_surface.image_data:getWidth()
+  dest_rect.h = dest_rect.h or src_surface.image_data:getHeight()
   
+  local scale_x = dest_rect.w / src_rect.w
+  local scale_y = dest_rect.h / src_rect.h
   
   -- Use these lines to enable transparency with cost problem 
   --local canvas = love.graphics.newCanvas(self.image_data:getDimensions())
   --canvas:renderTo(function()
-   -- love.graphics.draw(love.graphics.newImage(self.image_data))
-   -- love.graphics.draw(love.graphics.newImage(src_surface.image_data),dest_rect.x,dest_rect.y)
- -- end)
+    --love.graphics.draw(love.graphics.newImage(self.image_data))
+   -- love.graphics.draw(love.graphics.newImage(src_surface.image_data),dest_rect.x,dest_rect.y, 0, scale_x, scale_y)
+  --end)
   --self.image_data = canvas:getImageData()
   
   -- Use the line below to skip transparency and gain performance
   self.image_data:paste( src_surface:get(), dest_rect.x, dest_rect.y, src_rect.x, src_rect.y, src_rect.w, src_rect.h)
 end
 
+---
 -- Surface:get:width()
--- Returns the pixel width (X axis) of the surface
+-- @return The pixel width (X axis) of the surface
 function Surface:get_width()
   return self.image_data:getWidth()
 end
 
+---
 -- Surface:get_height()
--- Returns the pixel height (Y axis) of the surface
+-- @return The pixel height (Y axis) of the surface
 function Surface:get_height()
   return self.image_data:getHeight()
 end
 
+---
 -- Returns the color value at position <x>, <y>, starting with index (0, 0).
 -- Mostly for testing, not optimized for speed
+-- @param x x-cordinator
+-- @param y y-cordinator
+-- @return r,g,b,a - The color value at position <x>, <y>
 function Surface:get_pixel(x, y)
   r, g, b, a = self.image_data:getPixel( x, y )
   return r, g, b, a
 end
 
+---
 -- Surface:set_pixel(..
 -- Sets the pixel at position <x>, <y> to <color>.
 -- Mostly for testing, not optimized for speed
+-- @param x x-cordinator
+-- @param y y-cordinator
+-- @param color [Li write a description here]
 function Surface:set_pixel(x, y, color)
   self.image_data:setPixel(x, y, color.r, color.g, color.b, color.a)
 end
@@ -228,7 +251,7 @@ function Surface:premultiply()
 -- NOT IMPLEMENTED
 end
 
--- Surface:destroy()
+---
 -- Frees the graphics memory used by this surface. The same is
 -- eventually done automatically by Lua garbage collection for
 -- unreferenced surfaces but doing it by hand guarantees the memory is

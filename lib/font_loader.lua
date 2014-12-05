@@ -214,6 +214,16 @@ local function load_fonts(font_path)
   local backquote = gfx.loadpng(font_path.."96.png")
   backquote:premultiply()
 
+  --load ascii 123~126
+  local left_brace = gfx.loadpng(font_path.."123.png")
+  left_brace:premultiply()
+  local vertical_line = gfx.loadpng(font_path.."124.png")
+  vertical_line:premultiply()
+  local right_brace = gfx.loadpng(font_path.."125.png")
+  right_brace:premultiply()
+  local wave_line = gfx.loadpng(font_path.."126.png")
+  wave_line:premultiply()
+
   -- create the table for mapping ASCII code to the character_img
   -- <<TESTED AND WORKING ON THE BOX>>
   local font_chr_mapping_table = {
@@ -312,15 +322,26 @@ local function load_fonts(font_path)
     {id = 120,img = x},
     {id = 121,img = y},
     {id = 122,img = z},
+
+    {id = 123,img = left_brace},
+    {id = 124,img = vertical_line},
+    {id = 125,img = right_brace},
+    {id = 126,img = wave_line}
+
   }
   return font_chr_mapping_table
 end
 
 
---- [[ Fonts initialization ]]
+-- [[ Fonts initialization ]]
 --<<TESTED AND WORKING ON THE STB>>
-fonts = {ubuntunmono = {font_table = load_fonts(UbuntuMono_font_path),font_size = font_size_setting["UbuntuMono"]}, ubuntumonobold = {font_table = load_fonts(UbuntuMonoBold_font_path), font_size = font_size_setting["UbuntuMonoBold"]}, anonymousproreg = {font_table = load_fonts(AnonymousProReg_font_path), font_size = font_size_setting["AnonymousProReg"]}, anonymousprobold = {font_table = load_fonts(AnonymousProBold_font_path), font_size = font_size_setting["AnonymousProBold"]}} 
+fonts = {
+  ubuntumonobold = {font_table = load_fonts(UbuntuMonoBold_font_path), font_size = font_size_setting["UbuntuMonoBold"]}, 
+  anonymousprobold = {font_table = load_fonts(AnonymousProBold_font_path), font_size = font_size_setting["AnonymousProBold"]}
+} 
 
+--ubuntunmono = {font_table = load_fonts(UbuntuMono_font_path),font_size = font_size_setting["UbuntuMono"]}, 
+--anonymousproreg = {font_table = load_fonts(AnonymousProReg_font_path), font_size = font_size_setting["AnonymousProReg"]}, 
 --- Get the fonts
 -- <<>>
 --@return fonts - the fonts table and fonts size

@@ -10,6 +10,7 @@ graphics = {}
 --@param y The width to print the image, number between 0 and 1280
 function graphics.show_image(img, x, y)
   local image = gfx.loadpng(img)
+  image:premultiply()
   local xi = x
   local yi = y
   
@@ -38,10 +39,9 @@ end
 --@param y The width to print the image, number between 0 and 1280
 --@param zoom The factor to scale the image with
 function graphics.show_scaled_image(img, x, y, zoom)
-  log.info("Graphic use: "..gfx.get_memory_use())
-  log.info("tries to load: "..img)
+  log.info("Load: "..img.." Graphic use: "..gfx.get_memory_use())
   local image = gfx.loadpng(img)
-  log.info("loaded")
+  image:premultiply()
   local xi = x
   local yi = y
   
@@ -57,7 +57,6 @@ function graphics.show_scaled_image(img, x, y, zoom)
     w = (image:get_width())*zoom,
     h = (image:get_height())*zoom
   }
-  --log.info(temp_des_rec[w])
   screen:copyfrom(image, temp_src_rec, temp_des_rec, true)
   image:destroy()
 end

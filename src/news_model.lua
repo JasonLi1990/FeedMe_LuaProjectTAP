@@ -1,9 +1,8 @@
---- News Model Class
---  Build the main_news_model.
---  Main_news_model for fetching all the news from news_table and creating the news object.
+--- 
+-- News Model Class
+-- Build the main_news_model.
+-- Main_news_model for fetching all the news from news_table and creating the news object.
 -- @classmod news_model
--- @author Li & Ylva
--- @copyright FeedMe@TAP interactive
 
 -- Main_news_model is used to create a model for fetching all the news and store them
 News_model = {}
@@ -43,7 +42,7 @@ end
 --Getter for news feeds.
 --This function takes in a feed and returns the news table corresponding to that category.
 --@param feed The feed of news that is retrieved.
---@return news table
+--@return  a news table
 function News_model:get_news_feed(feed)
   if(feed == "world") then
     return self.world_news
@@ -96,8 +95,16 @@ function News_model:create_all_news()
   self.all_news = self:append_table(self.all_news,self.economy_news)
   self.all_news = self:append_table(self.all_news,self.tech_news)
 
-  -- Sort the table with an anonymous function
-  table.sort(self.all_news, function (news1,news2)
+  self:sort(self.all_news)
+end
+
+---
+-- Sorts the news based on publishing date.
+-- Takes in a news table and sorts it by using an anonymous function based on the publishing date. 
+--@param news The news table to be sorted.
+function News_model:sort(news)
+    -- Sort the table with an anonymous function
+  table.sort(news, function (news1,news2)
     local date1 = self:get_date(news1["pubDate"])
     local date2 = self:get_date(news2["pubDate"])
   
@@ -106,8 +113,8 @@ function News_model:create_all_news()
     end
     return false
   end )
-
 end
+
 
 ---
 --Adds a table to another table
@@ -143,14 +150,21 @@ end
 
 ---
 --Creates the news tables
---This function creates all the different feeds by calling the read_xml function for each xml file.
+--This function creates all the different feeds by calling the read_xml function for each xml file and sorts them based on publishing date.
 function News_model:load_xml()
 
   self.world_news = xml_parser.read_xml(PATH.."src/data/rss/world.xml", "world")
+  self:sort(self.world_news)
+  
   self.sport_news = xml_parser.read_xml(PATH.."src/data/rss/sport.xml", "sport")
+  self:sort(self.sport_news)
+  
   self.economy_news = xml_parser.read_xml(PATH.."src/data/rss/economy.xml","economy")
+  self:sort(self.economy_news)
+  
   self.tech_news = xml_parser.read_xml(PATH.."src/data/rss/technology.xml","tech")
-  self.entertainment_news = xml_parser.read_xml(PATH.."src/data/rss/entertainment.xml","entertainment")
+  self:sort(self.tech_news)
+  
   self:create_all_news()
 
 end

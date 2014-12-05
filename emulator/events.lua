@@ -1,7 +1,8 @@
---- Emulator Events Module
+--- 
+-- Emulator Events Module
 -- The Events module is an event manager hand handler for keyboard and 
 -- system events, emulating Zenterio's LuaEngine behavior.
--- @module events
+-- @emulator events
 
 -- Create LuaEngine screen surface and window_image_data to emulate  gfx.update() behavior
 -- gfx_update_pending is set to true when gfx.update() has been called, triggers update on love.draw()
@@ -11,19 +12,22 @@ screen = gfx.new_surface(love.window.getDimensions())
 screen.name = "screen"
 window_image = love.graphics.newImage(screen.image_data)
 
---- Loves main load file, called on start. Forwards to LuaEngine API onStart() function
+--- 
+-- Loves main load file, called on start. Forwards to LuaEngine API onStart() function
 function love.load()
   onStart()
 end
 
---- Loves main update function
+--- 
+-- Loves main update function
 -- used to calculate timers
 -- @param dt Delta time, the time since last update
 function love.update(dt)
 --system.update_timers()
 end
 
---- Callback function used to draw the screen on every frame
+--- 
+-- Callback function used to draw the screen on every frame
 -- We use a global variable to draw once when gfx.update() has been called
 function love.draw()
   if gfx_update_pending then
@@ -78,7 +82,10 @@ local keyboard_to_remote = {
 }
 keyboard_to_remote["return"] = "ok"
 
---- Love key press callback function
+--- 
+-- Love key press callback function
+-- @param key The character of the key press you input from the keyboard
+-- @param isrepeat Enable or disable the key repeat
 function love.keypressed(key, isrepeat)
   value= keyboard_to_remote[key]
   if tonumber(key) then
@@ -93,7 +100,9 @@ function love.keypressed(key, isrepeat)
   end
 end
 
---- Love key release callback function
+--- 
+-- Love key release callback function
+-- @param key The character of the key press you input from the keyboard
 function love.keyreleased(key)
   if keyboard_to_remote[key] then
     onKey(keyboard_to_remote[key], "up")

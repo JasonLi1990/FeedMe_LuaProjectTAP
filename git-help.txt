@@ -1,7 +1,0 @@
-REMEMBER
-Always do git pull before you commit and push!
-
-RESET LOCAL COPY
-Throw away all my staged and unstaged changes, forget everything on my current local branch and make it exactly the same as origin/master (the central repository), run the following:
-
-git reset --hard origin/master

@@ -30,12 +30,11 @@ function xml_parser.read_xml(filename, category)
   local news = {}
   
   -- Opens a file in read mode and set  default input to file
-  local file = io.open(PATH .. filename, "r")
+  local file = io.open(filename, "r")
 
   local s = " "
   while (string.match(s,"%<(.-)%>")~="/rss") do
     s = file:read("*l")
-    print(s)
     --1 news article
     if((string.match(s,"%<(.-)%>"))=="item") then
 

@@ -4,7 +4,7 @@
 -- @author Li & Ylva
 -- @copyright FeedMe@TAP interactive 
 
---- Attributes setting 
+-- Attributes setting 
 local Main_controller = {
 }
 
@@ -30,7 +30,7 @@ function Main_controller:new(arguments)
   -- Load the model, refresh from news API and get the latest news
   controller.news_model = News_model:new()
   controller.news_model:load_xml()
-  controller.news = controller.news_model:get_news_feed(self.feed)
+  controller.news = controller.news_model:get_news_feed(controller.feed)
   controller.left_arrow = controller:has_left_news()
   controller.right_arrow = controller:has_right_news()
 
@@ -49,7 +49,7 @@ end
 function Main_controller:move(direction)
 
   if self:has_news(direction) then
-    print(self.position)
+
     if direction == "down" then
 
       if self.position < 7  then
@@ -85,17 +85,19 @@ function Main_controller:move(direction)
           self.position = 1
 
         elseif self.position == 6 then
-          if self:has_super_right() then
+          if self:has_super_right(self.position) then
             self.position = 4
           else
             self.position = 1
           end
 
         elseif self.position == 9 then
-          if self:has_super_right() then
+          if self:has_super_right(self.position) then
             self.position = 7
-          else
+          elseif self:has_super_right(6) then
             self.position = 4
+          else
+            self.position = 1
           end
 
         end
@@ -146,10 +148,10 @@ end
 -- The crontroller's main task is to manage incoming events
 -- and user input. This is function manages rcu input.
 -- @param key The key input from the RCU
--- @param state 
+-- @param state  
 function Main_controller:on_input(key, state)
   log.info("got input")
-  if key == "ok" then
+  if key == "ok" and self.position ~=10 then
     load_controller("Article_controller",{position = self.position, feed =  self.feed, page = self.current_page})
   elseif key == "down" or key == "up" or key == "right"  or key == "left" then
     self:move(key)
@@ -159,10 +161,11 @@ function Main_controller:on_input(key, state)
     self:open_previous_feed()
   elseif key == "menu" then
     self:open_main_view()
+  elseif key == "info" then
+    load_controller("Help_controller",{position = self.position, feed =  self.feed, page = self.current_page})
   elseif tonumber(key) then
-    self.view:highlight(tonumber(key))
     self.position = tonumber(key)
-    self.view:category_highlight (self.category_index, self.position)
+    load_controller("Article_controller",{position = self.position, feed =  self.feed, page = self.current_page})
   end
 
 end
@@ -264,10 +267,10 @@ end
 
 ---
 -- Checks if there is a news to the right on the next page.
---@return false if there is not news on the other page o the right, else return true
-function Main_controller:has_super_right()
+-- @return false if there is not news on the other page o the right, else return true
+function Main_controller:has_super_right(position)
 
-  local position_check = self.position + 9*(self.current_page-1) +7  
+  local position_check = position + 9*(self.current_page-1) +7  
   if self.news[position_check] == nil then 
     return false
   end

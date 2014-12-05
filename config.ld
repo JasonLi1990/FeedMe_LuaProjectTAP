@@ -5,5 +5,7 @@ description='News feed application for LuaEngine'
 file={
 	'app.lua',
 	'src/',
-	'lib/'
+	'lib/',
+	'emulator/'
 }
+new_type("emulator","Emulator",true)

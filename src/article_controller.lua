@@ -122,7 +122,7 @@ function Article_controller:on_input(key, state)
     self:move(key)
   elseif key == "right" then
     self:move(key)
-  elseif key == "menu" then
+  elseif key == "menu" or key == "back" then
     self:move(key)
   end
 
@@ -134,15 +134,26 @@ end
 --@param key The key that is pressed down on the remote
 function Article_controller:move(key)
 
-  if key == "left" and self.position ~= 1  then
-    self.position = self.position -1
+  if key == "left" and self.page*self.position ~= 1 then
+    if self.position == 1 then
+      self.position = 9
+      self.page = self.page -1
+    else
+      self.position = self.position -1
+    end
+    
     self.article = self:retrieve_article()
     self:show_article(self.article)
     
 
-  elseif key == "right" and self.position+1 <= self.nr_of_news  then
-    self.position = self.position +1
-    self.page_number = 1
+  elseif key == "right" and (9*(self.page-1)+self.position+1) <= self.nr_of_news  then
+    if self.position == 9 then
+      self.page = self.page + 1
+      self.position = 1
+    else
+      self.position = self.position +1
+    end
+    
     self.article = self:retrieve_article()
     self:show_article(self.article)
 

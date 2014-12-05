@@ -1,3 +1,8 @@
+--- 
+-- Emulator system Module
+-- The system simulation on emulator based on the Zenterio API used for system control of system, create a new timer or return the time clock of system.
+-- @emulator system
+
 local timer = require "emulator.timer"
 
 local system = {}
@@ -13,16 +18,19 @@ function system.new_timer(interval_millisec, callback)
     --table.insert(t = timer(2, callback),
 end
 
--- Returns the time since the system started, in seconds and fractions
--- of seconds. Useful to measure lengths of time.
+---
+-- Returns the time since the system started, in seconds and fractions of seconds. Useful to measure lengths of time.
+-- @return the time since the system started, in seconds and fractions of seconds.
 function system.time()
   return os.clock()
 end
 
 
--- Terminates the execution of the script. The rest of the currently
+--- 
+--Terminates the execution of the script. The rest of the currently
 -- executing code will be run, but all timers are stopped and the
 -- current script environment will never be called again.
+-- @return os.exit()
 function system.stop()
     return os.exit();
 end

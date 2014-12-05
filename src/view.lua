@@ -6,7 +6,7 @@
 View = { }
 
 ---
---Constructor/Factory for the view object.
+-- Constructor/Factory for the view object.
 -- @param object Table with properties set already
 -- @return object Return Main_view object.
 function View:new()

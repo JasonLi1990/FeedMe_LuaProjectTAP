@@ -29,7 +29,7 @@ end
 --@param title A string with the title of the article that is being printed
 function Article_view:print_title(title)
   local fonts = font_loader.get_fonts()
-  text_printer.print_text(title, 250, 40, 950, 70, fonts["ubuntumonobold"], "uppercase") 
+  text_printer.print_text_zoom(title, 250, 40, 950, 70, fonts["ubuntumonobold"], "uppercase", 1.4) 
 end 
 
 ---
@@ -39,18 +39,18 @@ end
 function Article_view:print_category(category)
   log.info("print category: ".."src/data/img/" .. category.. "tag.png")
   local filename = "src/data/img/" .. category.. "tag.png"
-  graphics.show_scaled_image(filename, 20, 40, 1.5)
+  graphics.show_scaled_image(filename, 18, 40, 1.5)
 
 end 
 
 ---
 --Prints the text of the article (the article text).
---This function print the text of an article  to the article view at the right position with font 'ubuntunmono'. 
+--This function print the text of an article  to the article view at the right position with font 'anonymousprobold'. 
 --@param text A string with the article text.
 function Article_view:print_article_text(article_text)  
 
     local fonts = font_loader.get_fonts()
-    text_printer.print_text(article_text, 80, 210, 760, 460, fonts["anonymousprobold"], "normal") 
+    text_printer.print_text(article_text, 80, 190, 760, 460, fonts["anonymousprobold"], "normal") --y = 210 before
 
 end 
 

@@ -7,15 +7,15 @@ end
 
 LOG_OUTPUT_FILE = true
 LOG_OUTPUT_CONSOLE = true
-AVALIABLE_FEEDS = { "sport", "economy", "allnews", "world", "tech"} -- Settings function will alter this table
+AVALIABLE_FEEDS = { "sport", "economy", "allnews", "world", "tech"} -- Settings function will later replace this table
 
 package.path = PATH.."?.lua;"..package.path -- Fix require() on the box
 
 -- MODULES 
 -- Stored in the lib folder
 -- access functions on modules with dot, eg. log.info("my message")
-font_loader = require("lib.font_loader")
 log = require("lib.log")
+font_loader = require("lib.font_loader")
 graphics = require("lib.graphics")
 text_printer = require("lib.text_printer")
 xml_parser = require("lib.xml_parser")
@@ -33,6 +33,8 @@ Controller = require("src.controller")
 View = require("src.view")
 News_model = require("src.news_model")
 Main_view = require("src.main_view")
+Help_controller = require("src.help_controller")
+Help_view = require("src.help_view")
 
 -- App Variables
 controller = nil -- The current controller in the app

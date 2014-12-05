@@ -10,8 +10,8 @@
 log = {}
 
 --- Writes log entries to file and console
--- @ param level The severity level
--- @ param message The log message
+-- @param level The severity level
+-- @param message The log message
 local function write(level,message)
   
   -- Check settings

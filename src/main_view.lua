@@ -87,29 +87,29 @@ end
 -- @return null For testing .
 function Main_view:category_highlight(position, news_position)
   local x_cord
-  local y_cord = 36
+  local y_cord = 14
 
   if position < 1 or position > 5 then
     return
   end
 
   if position == 1 then
-    x_cord = 456
+    x_cord = 431
   elseif position == 2 then
-    x_cord = 539
+    x_cord = 528
   elseif position == 3 then
-    x_cord = 642
+    x_cord = 616
   elseif position == 4 then
-    x_cord = 713
+    x_cord = 691
   elseif position == 5 then
-    x_cord = 803
+    x_cord = 777
   else
 
 end
 if news_position == 10 then
   graphics.show_image("src/data/img/categoryhighlight.png", x_cord, y_cord)
 else
-  graphics.show_image("src/data/img/minihighlight_2.png", x_cord, y_cord)
+  graphics.show_image("src/data/img/categoryhighlight_thin.png", x_cord, y_cord)
 end
   --return -- only for testing
   return 
@@ -148,20 +148,20 @@ function Main_view:print_headlines(main_view_news)
 end
 
 ---
---Print the border of the specified square, the category tag and also "press OK" sign.
+-- Print the border of the specified square, the category tag and also "press OK" sign.
 -- @param main_view_news The table of all news. 
 function Main_view:add_thumbnail(main_view_news)
 
   local rectangle_positions = {
-    {xpos= 69, ypos = 57},
-    {xpos= 465, ypos = 57},
-    {xpos= 860, ypos = 57},
-    {xpos= 69, ypos = 273},
-    {xpos= 465, ypos = 273},
-    {xpos= 860, ypos = 273}, 
-    {xpos= 69, ypos = 489},
-    {xpos= 465, ypos = 489},
-    {xpos= 860, ypos = 489}
+    {xpos= 68, ypos = 57},
+    {xpos= 464, ypos = 57},
+    {xpos= 858, ypos = 57},
+    {xpos= 68, ypos = 273},
+    {xpos= 464, ypos = 273},
+    {xpos= 858, ypos = 273}, 
+    {xpos= 68, ypos = 489},
+    {xpos= 464, ypos = 489},
+    {xpos= 858, ypos = 489}
   }
 
   local tag_positions = {
@@ -198,13 +198,13 @@ end
 ---
 -- Prints the left arrow at the right position
 function Main_view:add_left_arrow()
- graphics.show_image("src/data/img/leftarrow.png",12, 320)
+ graphics.show_image("src/data/img/leftarrow.png",20, 320)
 end
 
 ---
 -- Prints the right arrow at the right position
 function Main_view:add_right_arrow()
- graphics.show_image("src/data/img/rightarrow.png",1226,320)
+ graphics.show_image("src/data/img/rightarrow.png",1214,320)
 end
 
 return Main_view

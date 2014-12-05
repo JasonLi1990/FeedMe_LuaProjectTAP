@@ -106,7 +106,6 @@ end
 -- <<TESTED AND WORKING ON THE STB>>
 --@param surface_width (the width of the surface you want to create) [Integer]
 --@param surface_height (the height of the surface you want to create) [Integer]
---
 function surface_initialize(surface_width,surface_height)
   -- body
   -- new surface for text by flexible surface width and height
@@ -140,6 +139,24 @@ function fill_surface(img, x, y)
   -- gfx.update()
 end
 
+--- Initialize the screen destination coordinates by zooming
+-- <<TESTED AND WORKING ON STB>>
+--@param x (The x-position of the screen's upper left corner) [Integer]
+--@param y (The y-position of the screen's upper left corner) [Integer]
+--@param zoom (The zooming size)
+--@return text_surface_des_rec The destination position of the text_surface on the screen
+function text_surface_pos_on_des_zoom(x, y, zoom)
+  -- body
+  -- initialize the cordinator that the text surface on the screen
+  local text_surface_des_rec = {
+    x = x,
+    y = y,
+    w = (text_surface:get_width())*zoom,
+    h = (text_surface:get_height())*zoom
+  }
+  return text_surface_des_rec
+end
+
 --- Reset the text_xi, text_yi, line_len
 -- <<TESTED AND WORKING ON THE STB>>
 function surface_reset()
@@ -164,7 +181,6 @@ end
 --@param max_height (The maximum height the surface is allowed to occupy, if the text is too long it ends with "...") [Integer]
 --@param letter_width (the width of the letter) [Integer]
 --@param letter_height (the height of the letter) [Integer]
---@return null
 function parse_text_to_surface(text, letter_width, letter_height, max_width, max_height)
   -- body
   local not_spanned = true
@@ -201,7 +217,7 @@ function parse_text_to_surface(text, letter_width, letter_height, max_width, max
   end
 end
 
---- Get all the space position in the text
+--- Get all the space position that are needed to create a new line in the text and store in the table
 --@param text - the text going to be parsed
 --@param line_max_num_of_chr - the max number of the characters for a line
 --@return text_space_table - the table storing the position of the spaces in text
@@ -213,6 +229,7 @@ local function text_space_store(text, line_max_num_of_chr)
   local p_new_line_space = line_max_num_of_chr 
   for j=1, string.len(text) do
     temp_chr = string.byte(text,j)
+    -- print("-----current_string "..string.sub(text,j,j+1)..", temp_chr "..temp_chr)
     if temp_chr == 32 then
        -- print("space found, j= "..j..", p_new_line_space"..p_new_line_space)
        if j > p_new_line_space +1 then
@@ -225,14 +242,19 @@ local function text_space_store(text, line_max_num_of_chr)
          p_index = j
        end
     elseif temp_chr == 10 or temp_chr == 13 then
+      -- print("return:"..j.. ", temp_chr:"..temp_chr)
        p_new_line_space = j + line_max_num_of_chr
        p_index = j
     end 
   end
-  -- print("hej"..line_max_num_of_chr)
-  for i=1, #text_new_line_table do
-     print(text_new_line_table[i])
+  -- store the last space before the text ends.
+  if string.len(text) > p_new_line_space + 1 then
+    table.insert(text_new_line_table, p_index)
   end
+  -- print("hej"..line_max_num_of_chr)
+  -- for i=1, #text_new_line_table do
+  --    print(text_new_line_table[i])
+  -- end
   return text_new_line_table
 end
 
@@ -255,7 +277,6 @@ end
 --@param max_height (The maximum height the surface is allowed to occupy, if the text is too long it ends with "...") [Integer]
 --@param letter_width (the width of the letter) [Integer]
 --@param letter_height (the height of the letter) [Integer]
---@return null
 function parse_text_to_surface_special(text, letter_width, letter_height, max_width, max_height)
   -- body
   local line_max_len = math.floor(max_width/letter_width) * letter_width
@@ -265,7 +286,7 @@ function parse_text_to_surface_special(text, letter_width, letter_height, max_wi
     chr = string.byte(text, i)
     if chr == 10 or chr == 13 then
       new_line()
-    elseif(line_len == line_max_len) then
+    elseif(line_len > line_max_len) then
       new_line()
       get_chr_img(chr,letter_width)
       line_len = line_len + letter_width
@@ -307,8 +328,8 @@ end
 --@param max_width (The maximum width the surface is allowed to occupy) [Integer]
 --@param max_height (The maximum height the surface is allowed to occupy,
 -- if the text is too long it ends with "...") [Integer]
---@param font (The name of the font as well as the size of it) [String] TO BE IMPLEMENTED
---
+--@param font (The name of the font as well as the size of it) [Table] 
+--@param character_case (The type of the character wanted to be printed [uppercase or lowercase]) [String] 
 function text_printer.print_text(mixed_text, x, y, max_width, max_height, font, character_case)
   
   if character_case == "uppercase" then
@@ -332,6 +353,47 @@ function text_printer.print_text(mixed_text, x, y, max_width, max_height, font, 
 
   -- initialize the screen destination cordinator
   local screen_des_rec = text_surface_pos_on_des(x, y)
+  -- initialize the surface source cordinator
+  local surface_src_rec = letter_crop_from_src(0,0)
+  -- parse the text to each character and fill in the new surface
+  parse_text_to_surface_special(text, letter_width, letter_height, max_width, max_height)
+  screen:copyfrom(text_surface,surface_src_rec,screen_des_rec,true)
+  surface_reset()
+end
+
+--- A function that prints a string on a surface with the zooming size that set by users. The parameters are:
+--@param mixed_text (The string to be printed) [String]
+--@param x (The x-position of the surface's upper left corner) [Integer]
+--@param y (The y-position of the surface's upper left corner) [Integer]
+--@param max_width (The maximum width the surface is allowed to occupy) [Integer]
+--@param max_height (The maximum height the surface is allowed to occupy,
+-- if the text is too long it ends with "...") [Integer]
+--@param font (The name of the font as well as the size of it) [String] 
+--@param character_case (The type of the character wanted to be printed [uppercase or lowercase]) [String] 
+--@param zoom (The zooming size of the surface printed on the screen) [Integer]
+function text_printer.print_text_zoom(mixed_text, x, y, max_width, max_height, font, character_case, zoom)
+  
+  if character_case == "uppercase" then
+    text = upper_text(mixed_text)
+  elseif character_case == "lowercase" then
+    text = lower_text(mixed_text)
+  else
+    text = mixed_text
+  end
+  chr_table = font["font_table"]
+  -- initialize the letter width and height
+  letter_width = font["font_size"]["image_width"]
+  letter_height = font["font_size"]["image_height"]
+  -- set the surface height
+  surface_height = cal_surface_height(max_width,max_height,letter_width,letter_height,x,y)
+  -- set the surface width
+  surface_width = cal_surface_width(max_width)
+
+  -- initialize the new surface
+  surface_initialize(surface_width,surface_height)
+
+  -- initialize the screen destination cordinator
+  local screen_des_rec = text_surface_pos_on_des_zoom(x, y, zoom)
   -- initialize the surface source cordinator
   local surface_src_rec = letter_crop_from_src(0,0)
   -- parse the text to each character and fill in the new surface
